@@ -8,14 +8,18 @@ class Logic:
     def __init__(self):
         self.data = Data.Data()
 
-    def createTasks(self):
+    # Генерирует массив задач
+    def create_tasks(self):
         self.data.tasks.clear()
         correctBtn = random.randint(0, 4)
         self.data.correctButton = correctBtn
         for i in range(5):
-            self._createTask(i == correctBtn)
+            shouldCorrect = i == correctBtn
+            self.data.tasks.append(self.create_task(shouldCorrect))
+        return self.data.tasks
 
-    def _createTask(self, isTrue):
+    # Рандомно генерирует задачу
+    def create_task(self, isTrue):
         sign = random.randint(0, 3)
         if sign == 0 or sign == 1:
             maxNum = 100
@@ -24,45 +28,59 @@ class Logic:
         else:
             maxNum = 50
 
-        if sign != 3:
-            firstNum = random.randint(1, maxNum)
-            secondNum = random.randint(1, maxNum)
-        else:
+        if sign == 3:  # Деление. Используем умножение делителя на частное для получения целых чисел
             secondNum = random.randint(1, maxNum)
             firstNum = secondNum * random.randint(1, 20)
+        else:
+            firstNum = random.randint(1, maxNum)
+            secondNum = random.randint(1, maxNum)
 
         if isTrue:
-            if sign == 0:
-                answer = firstNum + secondNum
-            elif sign == 1:
-                answer = firstNum - secondNum
-            elif sign == 2:
-                answer = firstNum * secondNum
-            else:
-                answer = int(firstNum / secondNum)
+            answer = self.getCorrectAnswer(firstNum, sign, secondNum)
         else:
             answer = random.randint(1, 300)
-        task = Task(firstNum, sign, secondNum, answer)
-        self.data.tasks.append(task)
+        return Task(firstNum, sign, secondNum, answer)
 
-    def getTasks(self):
-        return self.data.tasks
+    # Рассчитывает правильный ответ исходя из знака
+    def getCorrectAnswer(self, firstNum, sign, secondNum):
+        if sign == 0:
+            return firstNum + secondNum
+        elif sign == 1:
+            return firstNum - secondNum
+        elif sign == 2:
+            return firstNum * secondNum
+        else:
+            return int(firstNum / secondNum)
 
-    def btnClicked(self, btnId):
-        self.resetTimer()
+    # Обрабатывает наажатия на кнопку
+    def btn_clicked(self, btnId):
         if btnId == self.data.correctButton:
             self.data.scores += 20
             if self.data.scores > self.data.maxScores:
-                self.changeMaxScores()
+                self.change_max_scores_in_file()
+                self.data.maxScores = self.data.scores
             return True
         else:
             self.data.scores -= 30
             return False
 
-    def getScores(self):
+    # Получает текущее количество очков
+    def get_score(self):
         return self.data.scores
 
-    def getMaxScoresFromFile(self):
+    # Получает максимальное количество очков в переменной
+    def get_max_scores(self):
+        return self.data.maxScores
+
+    # Изменяет максимальное количество очков в файле
+    def change_max_scores_in_file(self):
+        score = self.data.scores
+        f = open("max.json", "w")
+        json.dump({"max_scores": score}, f)
+        f.close()
+
+    # Получает максимальное количество очков из файла
+    def get_max_scores_from_file(self):
         try:
             f = open("max.json", "r")
             self.data.maxScores = json.load(f)["max_scores"]
@@ -74,26 +92,10 @@ class Logic:
             self.data.maxScores = 100
             print(json)
 
-    def getMaxScores(self):
-        return self.data.maxScores
-
-    def changeMaxScores(self):
-        score = self.data.scores
-        f = open("max.json", "w")
-        json.dump({"max_scores": score}, f)
-        f.close()
-        self.data.maxScores = score
-
-    def timeChange(self):
-        self.data.time -= 1
-        return self.getTime()
-
-    def getTime(self):
-        return self.data.time
-
-    def timeIsUp(self):
+    # Уменьшает текущее количество очков при окончании времени
+    def time_is_up(self):
         self.data.scores -= 20
-        self.resetTimer()
 
-    def resetTimer(self):
-        self.data.timeReset()
+    # Сбрасывает значения текущего количества очков
+    def reset_score_value(self):
+        self.data.scores = 100
