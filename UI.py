@@ -1,5 +1,5 @@
-import tkinter
 from tkinter import *
+<<<<<<< HEAD
 
 import Timer
 from Task import *
@@ -22,13 +22,25 @@ class UI:
         self.createButtons()
         self.setTasks()
         self.renderWindow()
+=======
+
+
+class UI:
+    buttons = []
+>>>>>>> parent of a19504e (Version 1.0)
+
+    root = None
+    score = None
+    task = None
+
+    def createRoot(self):
+        self.root = Tk()
+
+    def createLabels(self):
+        self.score = Label(text="Очки: 666").grid(row=0, column=2, pady=20)
+        self.task = Label(text="123123").grid(row=0, column=1, pady=20)
 
     def createButtons(self):
-        for i in range(0, 5):
-            text = StringVar()
-            text.set(str(i))
-            self._buttonsText.append(text)
-
         buttonCoords = [[1, 0], [1, 2], [2, 1], [3, 0], [3, 2]]
 
         btnPadX = 10
@@ -37,6 +49,7 @@ class UI:
         btnHeight = 5
 
         for i in buttonCoords:
+<<<<<<< HEAD
             btn = Button(textvariable=self._buttonsText[len(self._buttons)], width=btnWidth, height=btnHeight,
                          bg="#746096", fg="#FFFEF0",
                          font=("Arial", 15), activebackground="#CCBFE3",
@@ -66,12 +79,17 @@ class UI:
                 handledSign = "/"
             task = str(tasks[i].firstNum) + " " + handledSign + " " + str(tasks[i].secondNum) + " = " + str(tasks[i].answer)
             self._buttonsText[i].set(task)
+=======
+            self.buttons.append(Button(text="1", width=btnWidth, height=btnHeight)
+                                .grid(row=i[0], column=i[1], padx=btnPadX, pady=btnPadY))
+>>>>>>> parent of a19504e (Version 1.0)
 
     def onClosing(self):
         Timer.Timer.appIsOpen = False
         self._root.destroy()
 
     def renderWindow(self):
+<<<<<<< HEAD
         self._root.config(bg="#FFFEF0")
         self._root.columnconfigure(0, weight=1)
         self._root.columnconfigure(2, weight=1)
@@ -82,3 +100,13 @@ class UI:
         self._root.resizable(False, False)
         self._root.protocol("WM_DELETE_WINDOW", lambda: self.onClosing())
         self._root.mainloop()
+=======
+        self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(2, weight=1)
+        self.root.rowconfigure(0, weight=1)
+        self.root.rowconfigure(3, weight=1)
+        self.root.geometry("800x600")
+        self.root.title("Счет в уме")
+        self.root.resizable(False, False)
+        self.root.mainloop()
+>>>>>>> parent of a19504e (Version 1.0)
