@@ -1,17 +1,12 @@
 import Data
 import random
 import json
-import base64
-
 from Task import Task
 
 
 class Logic:
     def __init__(self):
         self.data = Data.Data()
-        output = base64.b64encode("asdasd".encode())
-        print(output)
-        print(base64.b64decode(output).decode())
 
     def createTasks(self):
         self.data.tasks.clear()
@@ -54,6 +49,7 @@ class Logic:
         return self.data.tasks
 
     def btnClicked(self, btnId):
+        self.resetTimer()
         if btnId == self.data.correctButton:
             self.data.scores += 20
             if self.data.scores > self.data.maxScores:
@@ -87,3 +83,17 @@ class Logic:
         json.dump({"max_scores": score}, f)
         f.close()
         self.data.maxScores = score
+
+    def timeChange(self):
+        self.data.time -= 1
+        return self.getTime()
+
+    def getTime(self):
+        return self.data.time
+
+    def timeIsUp(self):
+        self.data.scores -= 20
+        self.resetTimer()
+
+    def resetTimer(self):
+        self.data.timeReset()

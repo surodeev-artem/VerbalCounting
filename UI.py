@@ -1,6 +1,5 @@
-import tkinter
 from tkinter import *
-from Task import *
+import tkinter.ttk as ttk
 
 
 class UI:
@@ -14,10 +13,27 @@ class UI:
         self._score = Label(textvariable=self.scores, font=("Arial", 25), bg="#FFFEF0").grid(row=0, column=1, pady=20)
         self.maxScores = StringVar()
         self.maxScores.set("Максимальный счет: " + str(self.logic.getMaxScores()))
-        self._maxScore = Label(textvariable=self.maxScores, font=("Arial", 15), bg="#FFFEF0").grid(row=0, column=2, pady=20)
+        self._maxScore = Label(textvariable=self.maxScores, font=("Arial", 15), bg="#FFFEF0").grid(row=0, column=2,
+                                                                                                   pady=20)
+        self.pb = ttk.Progressbar(length=100, mode="determinate")
+        self.pb.grid(row=0, column=0, pady=20)
+        self.pb['value'] = 100
+
+        self.countdown()
         self.createButtons()
         self.setTasks()
         self.renderWindow()
+
+    def countdown(self):
+        time = self.logic.timeChange()
+        if time == 0:
+            self.setTasks()
+            self.logic.timeIsUp()
+            self.pb['value'] = 100
+            self.scores.set("Текущий счет: " + str(self.logic.getScores()))
+
+        self.pb.step(-3.3333333333333)
+        self._root.after(1000, self.countdown)
 
     def createButtons(self):
         for i in range(0, 5):
@@ -36,11 +52,12 @@ class UI:
             btn = Button(textvariable=self._buttonsText[len(self._buttons)], width=btnWidth, height=btnHeight,
                          bg="#746096", fg="#FFFEF0",
                          font=("Arial", 15), activebackground="#CCBFE3",
-                         command= lambda btnId=len(self._buttons):self.isCorrectAnswer(btnId))
+                         command=lambda btnId=len(self._buttons): self.isCorrectAnswer(btnId))
             btn.grid(row=i[0], column=i[1], padx=btnPadX, pady=btnPadY)
             self._buttons.append(btn)
 
     def isCorrectAnswer(self, btnId):
+        self.pb['value'] = 100
         self.logic.btnClicked(btnId)
         self.scores.set("Текущий счет: " + str(self.logic.getScores()))
         self.maxScores.set("Максимальный счет: " + str(self.logic.getMaxScores()))
@@ -60,7 +77,8 @@ class UI:
                 handledSign = "*"
             else:
                 handledSign = "/"
-            task = str(tasks[i].firstNum) + " " + handledSign + " " + str(tasks[i].secondNum) + " = " + str(tasks[i].answer)
+            task = str(tasks[i].firstNum) + " " + handledSign + " " + str(tasks[i].secondNum) + " = " + str(
+                tasks[i].answer)
             self._buttonsText[i].set(task)
 
     def renderWindow(self):

@@ -3,9 +3,10 @@ class Data:
     maxScores = 100
     scores = 100
     tasks = []
+    time = 30
 
-    def getTask(self, taskId):
-        return self.tasks[taskId]
+    def __init__(self):
+        self.timeReset()
 
-    def setTask(self, taskId, task):
-        self.tasks[taskId] = task
+    def timeReset(self):
+        self.time = 30
