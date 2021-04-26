@@ -1,12 +1,6 @@
-from UI import *
+from Logic import Logic
+from UI import UI
 
-
-def createUI():
-    ui = UI()
-    ui.createRoot()
-    ui.createLabels()
-    ui.createButtons()
-    ui.renderWindow()
-
-
-createUI()
+logic = Logic()
+logic.getMaxScoresFromFile()
+ui = UI(logic)
