@@ -1,5 +1,6 @@
 from tkinter import *
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import Timer
 from Task import *
@@ -36,6 +37,20 @@ class UI:
     def createRoot(self):
         self.root = Tk()
 
+=======
+
+
+class UI:
+    buttons = []
+
+    root = None
+    score = None
+    task = None
+
+    def createRoot(self):
+        self.root = Tk()
+
+>>>>>>> parent of a19504e (Version 1.0)
     def createLabels(self):
         self.score = Label(text="Очки: 666").grid(row=0, column=2, pady=20)
         self.task = Label(text="123123").grid(row=0, column=1, pady=20)
@@ -49,6 +64,7 @@ class UI:
         btnHeight = 5
 
         for i in buttonCoords:
+<<<<<<< HEAD
 <<<<<<< HEAD
             btn = Button(textvariable=self._buttonsText[len(self._buttons)], width=btnWidth, height=btnHeight,
                          bg="#746096", fg="#FFFEF0",
@@ -101,6 +117,12 @@ class UI:
         self._root.protocol("WM_DELETE_WINDOW", lambda: self.onClosing())
         self._root.mainloop()
 =======
+=======
+            self.buttons.append(Button(text="1", width=btnWidth, height=btnHeight)
+                                .grid(row=i[0], column=i[1], padx=btnPadX, pady=btnPadY))
+
+    def renderWindow(self):
+>>>>>>> parent of a19504e (Version 1.0)
         self.root.columnconfigure(0, weight=1)
         self.root.columnconfigure(2, weight=1)
         self.root.rowconfigure(0, weight=1)
@@ -108,5 +130,9 @@ class UI:
         self.root.geometry("800x600")
         self.root.title("Счет в уме")
         self.root.resizable(False, False)
+<<<<<<< HEAD
+        self.root.mainloop()
+>>>>>>> parent of a19504e (Version 1.0)
+=======
         self.root.mainloop()
 >>>>>>> parent of a19504e (Version 1.0)

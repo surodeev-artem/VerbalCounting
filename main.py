@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Data
 from Logic import Logic
 from UiThread import UiThread
@@ -23,6 +24,11 @@ startThreads()
 from UI import *
 
 
+=======
+from UI import *
+
+
+>>>>>>> parent of a19504e (Version 1.0)
 def createUI():
     ui = UI()
     ui.createRoot()
@@ -32,4 +38,7 @@ def createUI():
 
 
 createUI()
+<<<<<<< HEAD
+>>>>>>> parent of a19504e (Version 1.0)
+=======
 >>>>>>> parent of a19504e (Version 1.0)
