@@ -1,5 +1,7 @@
 import tkinter
 from tkinter import *
+
+import Timer
 from Task import *
 
 
@@ -15,6 +17,8 @@ class UI:
         self.maxScores = StringVar()
         self.maxScores.set("Максимальный счет: " + str(self.logic.getMaxScores()))
         self._maxScore = Label(textvariable=self.maxScores, font=("Arial", 15), bg="#FFFEF0").grid(row=0, column=2, pady=20)
+
+    def initComponents(self):
         self.createButtons()
         self.setTasks()
         self.renderWindow()
@@ -36,7 +40,7 @@ class UI:
             btn = Button(textvariable=self._buttonsText[len(self._buttons)], width=btnWidth, height=btnHeight,
                          bg="#746096", fg="#FFFEF0",
                          font=("Arial", 15), activebackground="#CCBFE3",
-                         command= lambda btnId=len(self._buttons):self.isCorrectAnswer(btnId))
+                         command=lambda btnId=len(self._buttons):self.isCorrectAnswer(btnId))
             btn.grid(row=i[0], column=i[1], padx=btnPadX, pady=btnPadY)
             self._buttons.append(btn)
 
@@ -63,6 +67,10 @@ class UI:
             task = str(tasks[i].firstNum) + " " + handledSign + " " + str(tasks[i].secondNum) + " = " + str(tasks[i].answer)
             self._buttonsText[i].set(task)
 
+    def onClosing(self):
+        Timer.Timer.appIsOpen = False
+        self._root.destroy()
+
     def renderWindow(self):
         self._root.config(bg="#FFFEF0")
         self._root.columnconfigure(0, weight=1)
@@ -72,4 +80,5 @@ class UI:
         self._root.geometry("800x600")
         self._root.title("Счет в уме")
         self._root.resizable(False, False)
+        self._root.protocol("WM_DELETE_WINDOW", lambda: self.onClosing())
         self._root.mainloop()

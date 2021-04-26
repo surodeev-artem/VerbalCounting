@@ -1,17 +1,11 @@
-import Data
 import random
 import json
-import base64
-
-from Task import Task
+import Task
 
 
 class Logic:
-    def __init__(self):
-        self.data = Data.Data()
-        output = base64.b64encode("asdasd".encode())
-        print(output)
-        print(base64.b64decode(output).decode())
+    def __init__(self, data):
+        self.data = data
 
     def createTasks(self):
         self.data.tasks.clear()
@@ -47,7 +41,7 @@ class Logic:
                 answer = int(firstNum / secondNum)
         else:
             answer = random.randint(1, 300)
-        task = Task(firstNum, sign, secondNum, answer)
+        task = Task.Task(firstNum, sign, secondNum, answer)
         self.data.tasks.append(task)
 
     def getTasks(self):
@@ -58,10 +52,8 @@ class Logic:
             self.data.scores += 20
             if self.data.scores > self.data.maxScores:
                 self.changeMaxScores()
-            return True
         else:
             self.data.scores -= 30
-            return False
 
     def getScores(self):
         return self.data.scores
