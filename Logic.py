@@ -12,7 +12,7 @@ class Logic:
     def create_tasks(self):
         self.data.tasks.clear()
         correctBtn = random.randint(0, 4)
-        self.data.correctButton = correctBtn
+        self.data.correct_button = correctBtn
         for i in range(5):
             shouldCorrect = i == correctBtn
             self.data.tasks.append(self.create_task(shouldCorrect))
@@ -22,15 +22,15 @@ class Logic:
     def create_task(self, isTrue):
         sign = random.randint(0, 3)
         if sign == 0 or sign == 1:
-            maxNum = 100
+            maxNum = 70 + (30 * self.data.difficult)
         elif sign == 2:
-            maxNum = 20
+            maxNum = 15 + (10 * self.data.difficult)
         else:
-            maxNum = 50
+            maxNum = 50 + (20 * self.data.difficult)
 
         if sign == 3:  # Деление. Используем умножение делителя на частное для получения целых чисел
             secondNum = random.randint(1, maxNum)
-            firstNum = secondNum * random.randint(1, 20)
+            firstNum = secondNum * random.randint(1, 15 + (10 * self.data.difficult))
         else:
             firstNum = random.randint(1, maxNum)
             secondNum = random.randint(1, maxNum)
@@ -54,14 +54,14 @@ class Logic:
 
     # Обрабатывает наажатия на кнопку
     def btn_clicked(self, btnId):
-        if btnId == self.data.correctButton:
-            self.data.scores += 20
-            if self.data.scores > self.data.maxScores:
+        if btnId == self.data.correct_button:
+            self.data.scores += 20 + (10 * self.data.difficult)
+            if self.data.scores > self.data.max_scores:
                 self.change_max_scores_in_file()
-                self.data.maxScores = self.data.scores
+                self.data.max_scores = self.data.scores
             return True
         else:
-            self.data.scores -= 30
+            self.data.scores -= 30 + (15 * self.data.difficult)
             return False
 
     # Получает текущее количество очков
@@ -70,7 +70,18 @@ class Logic:
 
     # Получает максимальное количество очков в переменной
     def get_max_scores(self):
-        return self.data.maxScores
+        return self.data.max_scores
+
+    # Изменяет сложность игры
+    def change_difficult(self, difficult):
+        self.data.difficult = difficult
+
+    def get_difficult(self):
+        return self.data.difficult
+
+    # Возвращает id правильной кнопки
+    def get_correct_answer(self):
+        return self.data.correct_button
 
     # Изменяет максимальное количество очков в файле
     def change_max_scores_in_file(self):
@@ -83,18 +94,18 @@ class Logic:
     def get_max_scores_from_file(self):
         try:
             f = open("max.json", "r")
-            self.data.maxScores = json.load(f)["max_scores"]
+            self.data.max_scores = json.load(f)["max_scores"]
             print(json)
         except FileNotFoundError:
             f = open("max.json", "w")
             json.dump({"max_scores": 100}, f)
             f.close()
-            self.data.maxScores = 100
+            self.data.max_scores = 100
             print(json)
 
     # Уменьшает текущее количество очков при окончании времени
     def time_is_up(self):
-        self.data.scores -= 20
+        self.data.scores -= 20 + (10 * self.data.difficult)
 
     # Сбрасывает значения текущего количества очков
     def reset_score_value(self):

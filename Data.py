@@ -1,5 +1,6 @@
 class Data:
-    correctButton = 0
-    maxScores = 100
+    correct_button = 0
+    max_scores = 100
     scores = 100
     tasks = []
+    difficult = 1
